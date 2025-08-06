@@ -1,0 +1,130 @@
+{% load static %}  <!-- Load the static template tag -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column; /* Added to align items vertically */
+        }
+        .container {
+            background-color: #fff8e1; /* Light gold background */
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row; /* Change to row to align items horizontally */
+            width: 800px; /* Increased width for long rectangle */
+            padding: 20px;
+            background-image: url('path/to/your/background.jpg'); /* Background image */
+            background-size: cover;
+            background-position: center;
+        }
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-left: 20px; /* Adjust padding for central right alignment */
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+        .form-container {
+            flex: 2;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .form-container h2 {
+            margin-top: 0;
+            color: #b8860b; /* Dark gold text */
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group input:focus {
+            border-color: #b8860b; /* Dark gold border on focus */
+            outline: none;
+        }
+        .proceed-btn {
+            background-color: #b8860b; /* Dark gold background */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .proceed-btn:hover {
+            background-color: #daa520; /* Lighter gold on hover */
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo-container img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{% static 'icons/logo.png' %}" alt="Logo">
+    </div>
+    <div class="container">
+        <div class="form-container">
+            <h2>Payment Details</h2>
+            <form>
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" name="card-number" required>
+                </div>
+                <div class="form-group">
+                    <label for="holder-name">Card Holder Name</label>
+                    <input type="text" id="holder-name" name="holder-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exp-date">Expiration Date</label>
+                    <input type="text" id="exp-date" name="exp-date" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" required>
+                </div>
+                <a href="{% url 'thanku_card' %}" class="proceed-btn">Proceed to Pay</a>
+            </form>
+        </div>
+        <div class="image-container">
+            <img src="{% static 'audi_image/card.jpg' %}" alt="Card Image">
+        </div>
+    </div>
+</body>
+</html>

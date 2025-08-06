@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">Used Products</h2>
+
+    <div class="row justify-content-center">
+        {% for used_product in used_products %}
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded overflow-hidden">
+                <!-- Image Carousel -->
+                <div id="carousel{{ used_product.id }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ used_product.image1.url }}" class="d-block w-100" alt="{{ used_product.title }}">
+                        </div>
+                        {% if used_product.image2 %}
+                        <div class="carousel-item">
+                            <img src="{{ used_product.image2.url }}" class="d-block w-100" alt="{{ used_product.title }}">
+                        </div>
+                        {% endif %}
+                        {% if used_product.image3 %}
+                        <div class="carousel-item">
+                            <img src="{{ used_product.image3.url }}" class="d-block w-100" alt="{{ used_product.title }}">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ used_product.id }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ used_product.id }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <div class="card-body text-center">
+                    <h6 class="card-title fw-semibold mb-2">{{ used_product.title }}</h6>
+                    <p class="card-text text-dark mb-1"><strong>₹{{ used_product.price }}</strong></p>
+
+                    <!-- Plain Text Toggle for Details -->
+                    <p class="view-details text-primary" style="cursor: pointer;" data-target="details{{ used_product.id }}">
+                        View Details
+                    </p>
+
+                    <!-- Collapsible Details Section -->
+                    <div class="details-container collapse mt-2" id="details{{ used_product.id }}">
+                        <p class="text-muted small">{{ used_product.description }}</p>
+                        <p><strong>Condition:</strong> {{ used_product.condition }}</p>
+                        <p><strong>Seller Contact:</strong> {{ used_product.phone_number }}</p>
+
+                        <!-- Call Now Button -->
+                        <a href="tel:{{ used_product.phone_number }}" class="btn btn-primary btn-sm mt-2">
+                            Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No used products listed yet.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Sell Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'add_used_product' %}" class="sell-btn">Sell a Used Product</a>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+    .carousel img {
+        height: 180px;
+        object-fit: contain;
+        background-color: #f8f9fa;
+    }
+
+    .sell-btn {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 500;
+        padding: 8px 15px;
+        display: inline-block;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+    }
+
+    .sell-btn:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* View Details Text */
+    .view-details {
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .view-details:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+</style>
+
+<!-- JavaScript to Handle the Toggle -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".view-details").forEach(item => {
+            item.addEventListener("click", function () {
+                let targetId = this.getAttribute("data-target");
+                let details = document.getElementById(targetId);
+                
+                if (details.classList.contains("show")) {
+                    details.classList.remove("show"); // Collapse if already open
+                    this.innerText = "View Details";
+                } else {
+                    details.classList.add("show"); // Expand
+                    this.innerText = "Hide Details";
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

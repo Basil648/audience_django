@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <!-- Left Side: Product Images & Thumbnails -->
+    <div class="col-md-6 text-center">
+      <!-- Main Product Image -->
+      <img id="mainImage" src="{{ images.0.url }}" class="img-fluid main-product-image" alt="{{ product.name }}"
+        style="max-width: 500px;">
+
+      <!-- Thumbnails (Only 2 Images) -->
+      <div class="d-flex justify-content-center mt-3">
+        {% for image in images|slice:"1:3" %}
+        <img src="{{ image.url }}" class="img-fluid thumbnail-img mx-2" alt="{{ product.name }}"
+          style="width: 80px; cursor: pointer;" onclick="changeMainImage(this)">
+        {% endfor %}
+      </div>
+
+      <!-- Add to Cart Button -->
+      <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-lg mt-3">ADD TO CART</a>
+
+      <!-- Rating Section (Fixed Alignment) -->
+      <div class="ratings-section mt-4">
+        <div class="overall-rating">
+          <h2>{{product.rating|floatformat:1}}</h2>
+          <p>37,333 Ratings & 456 Reviews</p>
+        </div>
+
+        <div class="rating-circles">
+          <div class="rating-item">
+            <div class="circle">4.2</div>
+            <span>Sound Quality</span>
+          </div>
+          <div class="rating-item">
+            <div class="circle">4.1</div>
+            <span>Bass</span>
+          </div>
+          <div class="rating-item">
+            <div class="circle">4.0</div>
+            <span>Design & Build</span>
+          </div>
+          <div class="rating-item">
+            <div class="circle">4.4</div>
+            <span>Battery Backup</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Product Details -->
+    <div class="col-md-6">
+      <h2>{{ product.name }}</h2>
+      <p><strong>Brand:</strong> {{ product.brand }}</p>
+      <p>
+        <strong>Price:</strong>
+        <span style="text-decoration: line-through;">₹{{ product.price }}</span>
+        ₹{{ product.discounted_price }}
+        <span style="color: green; font-weight: bold;">({{ product.discount_percentage|floatformat}}% Off)</span>
+      </p>
+
+
+      <p><strong>Description:</strong> {{ product.description }}</p>
+      <p><strong>Specifications:</strong></p>
+      <ul>
+        {% for spec in product.specifications.splitlines %}
+        <li>{{ spec }}</li>
+        {% endfor %}
+      </ul>
+      {% if product.stock < 300 %} <p class="low-stock-text">Hurry up! Few stocks left !</p>
+        {% endif %}
+
+        <p><strong> Offers:</strong></p>
+        <ul>
+          {% for offer in product.offers.splitlines %}
+          <li>
+            <img src="{% static 'icons/pricetag.png' %}" alt="Offer"
+              style="width: 20px; height: 20px; vertical-align: middle;">
+            {{ product.offers }}
+          </li>
+          {% endfor %}
+        </ul>
+
+    </div>
+  </div>
+</div>
+
+<div class="related-products-section">
+  <h2>Products You Might Like</h2>
+  <div class="related-products">
+    {% for product in related_products %}
+    <div class="product-card">
+      <a href="{% url 'product_detail' slug=product.slug %}">
+        <div class="product-image">
+          {% if product.cover_image %}
+          <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" loading="lazy">
+          {% else %}
+          <img src="/static/images/default-product.jpg" alt="No Image Available">
+          {% endif %}
+        </div>
+
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="price">₹{{ product.price }}</p>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <p>No recommendations available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  /* Section Styling */
+  .related-products-section {
+    margin-top: 40px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+  }
+
+  .related-products-section h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+  }
+
+  /* Grid Layout */
+  .related-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+  }
+
+  /* Product Card */
+  .product-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Image */
+  .product-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* Product Info */
+  .product-info {
+    padding: 10px 15px;
+    text-align: center;
+  }
+
+  .product-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .brand {
+    font-size: 14px;
+    color: #777;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #222;
+  }
+  a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Keeps default text color */
+}
+</style>
+
+
+
+<!-- JavaScript to Change Main Image on Thumbnail Click -->
+<script>
+  function changeMainImage(selectedImage) {
+    let mainImage = document.getElementById('mainImage');
+    let tempSrc = mainImage.src;
+    mainImage.src = selectedImage.src;
+    selectedImage.src = tempSrc;
+  }
+</script>
+
+<!-- CSS for Styling -->
+<style>
+  /* Main Product Image */
+  .main-product-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Thumbnail Images */
+  .thumbnail-img {
+    border: 2px solid transparent;
+    transition: border 0.3s;
+  }
+
+  .thumbnail-img:hover {
+    border: 2px solid #007bff;
+  }
+
+  /* Add to Cart Button */
+  .btn-primary {
+    display: block;
+    width: 200px;
+    text-align: center;
+    margin: 20px auto;
+  }
+
+  /* Low Stock Alert */
+  .low-stock-text {
+    color: #d9534f;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  /* Rating Section */
+  .ratings-section {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .overall-rating {
+    text-align: center;
+    margin-right: 20px;
+  }
+
+  .overall-rating h2 {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .rating-circles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rating-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 3px solid green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+</style>
+<hr>
+<h3>Customer Reviews</h3>
+
+<!-- Fake Reviews Section -->
+{% for review in fake_reviews %}
+    <div class="review-box">
+        <p><strong>{{ review.user }}</strong> - {{ review.rating }}★</p>
+        <p>{{ review.comment }}</p>
+    </div>
+{% endfor %}
+
+<!-- Real Reviews Section -->
+{% for review in reviews %}
+    <div class="review-box">
+        <p><strong>{{ review.user.username }}</strong> - {{ review.rating }}★</p>
+        <p>{{ review.comment }}</p>
+        <small>Posted on {{ review.created_at }}</small>
+    </div>
+{% endfor %}
+
+<hr>
+
+<!-- Add Review Section -->
+{% if user.is_authenticated %}
+    <h3>Add a Review</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+{% else %}
+    <p>You need to <a href="{% url 'login' %}">login</a> to leave a review.</p>
+{% endif %}
+
+{% endblock %}

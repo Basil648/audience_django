@@ -1,0 +1,93 @@
+{% extends 'base.html'%}
+{%block content%}
+<style>
+    .used-products-container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 15px;
+    }
+
+    .used-products-list {
+        display: flex;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+
+    .used-product-card {
+        background: #fdfdfd;
+        border-radius: 10px;
+        padding: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #ddd;
+    }
+
+    .used-product-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .used-product-card img {
+        width: 90%;
+        height: 100px;
+        object-fit: contain;
+        border-radius: 6px;
+        background: #fff;
+        padding: 5px;
+    }
+
+    .used-product-card h3 {
+        font-size: 15px;
+        margin: 5px 0;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .used-product-card p {
+        font-size: 13px;
+        color: #555;
+        margin: 3px 0;
+    }
+
+    .delete-btn {
+        background: none;
+        color: red;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .delete-btn:hover {
+        background: red;
+        color: white;
+        padding: 6px 20px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="used-products-container">
+    <h3>My Products</h3>
+    <div class="used-products-list">
+        {% for used_product in used_products %}
+        <div class="used-product-card">
+            <img src="{{ used_product.image1.url }}" alt="{{ used_product.title }}">
+            <h3>{{ used_product.title }}</h3>
+            <p><strong>₹{{ used_product.price }}</strong></p>
+            <p><strong>Condition:</strong> {{ used_product.condition }}</p>
+            <p><strong>Contact:</strong> {{ used_product.phone_number }}</p>
+            <form method="POST" action="{% url 'delete_used_product' used_product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">Remove</button>
+            </form>
+        </div>
+        {% empty %}
+        <p>You haven't listed any products yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

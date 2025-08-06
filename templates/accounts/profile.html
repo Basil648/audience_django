@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 50px 20px;
+    }
+    .profile-box {
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        max-width: 450px;
+        width: 100%;
+        min-height: 350px; /* Making it longer */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .profile-box h2 {
+        margin-bottom: 15px;
+        font-size: 26px;
+        color: #333;
+    }
+    .profile-box p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 12px;
+    }
+
+    /* Button Styling */
+    .profile-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .profile-actions a {
+        text-decoration: none;
+        font-size: 18px;
+        padding: 10px 0;
+        border-radius: 8px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .added-products-btn {
+        color: #007bff;
+        background: none;
+    }
+    .added-products-btn:hover {
+        background: #007bff;
+        color: white;
+    }
+
+    .logout-btn {
+        color: #dc3545;
+        background: none;
+    }
+    .logout-btn:hover {
+        background: #dc3545;
+        color: white;
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-box">
+        <div>
+            <h2>Welcome, {{ user.username|default:"Guest" }}!</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+        <div class="profile-actions">
+            <a href="{% url 'user_products' %}" class="added-products-btn">View My Added Products</a>
+            <a href="{% url 'accounts:logout' %}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

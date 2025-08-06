@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <img src="{% static 'icons/logo.png' %}" alt="Audeience Logo" class="logo">
+            <h2>Login to Audeience</h2>
+            <form method="POST">
+                {% csrf_token %}
+                
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" placeholder="Enter your username" required>
+
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" placeholder="Enter your password" required>
+
+                {% if form.errors %}
+                    <div class="error-messages">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn">Log In</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a></p>
+        </div>
+        <div class="image-section">
+            <img src="{% static 'audi_image/logimage.jpeg' %}" alt="Login Image">
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: black; /* Changed background to black */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    
+    .container {
+        display: flex;
+        width: 800px;
+        background: white;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .form-section {
+        width: 50%;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo {
+        width: 120px; /* Adjust size as needed */
+        /* margin-bottom: 70px; */
+    }
+    
+    .image-section {
+        width: 50%;
+    }
+    
+    .image-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        margin-left: 40px;
+    }
+    
+    h2 {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        margin-bottom: 50px;
+    }
+    
+    input {
+        padding: 8px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+    
+    .btn {
+        padding: 10px;
+        background: #ff6600;
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 5px;
+        margin-left: 10px;
+    }
+    
+    .error-messages p {
+        color: red;
+        font-size: 14px;
+        text-align: center;
+    }
+</style>

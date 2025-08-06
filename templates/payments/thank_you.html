@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <!-- Include header.html file -->
+<div style="margin-top: 50px; text-align: center;">
+    <h2>Thank You!</h2>
+    <p>Your order has been successfully placed.</p>
+    <p>ORDER ID: <strong>4697-B-2398AO</strong></p>
+    <p>We appreciate your purchase and hope you enjoy your new products.</p>
+    
+    <p>Your order will be shipped within <strong>1-2 business days</strong>.</p>
+    <p>You can track your order on our delivery partner's website using the Order ID.</p>
+    
+    <div style="margin-top: 30px;"> <!-- Extra space above button -->
+        <a href="{% url 'index' %}" 
+           style="background: none; color: #007BFF; padding: 12px 24px; 
+                  text-decoration: none; font-size: 16px; border-radius: 5px; 
+                  display: inline-block; transition: 0.3s ease-in-out;"
+           onmouseover="this.style.backgroundColor='#007BFF'; this.style.color='white';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#007BFF';">
+            Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Add space before footer -->
+<div style="margin-top: 80px;"></div>
+{% endblock %}
+  

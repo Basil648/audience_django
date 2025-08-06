@@ -1,0 +1,39 @@
+{%load static %}
+<footer class="site-footer border-top">
+  <div class="container">
+      <div class="row d-flex justify-content-between">
+          <!-- Navigations -->
+          <div class="col-md-4">
+              <h3 class="footer-heading mb-4">Navigations</h3>
+              <ul class="list-unstyled">
+                  <li><a href="{% url 'shop_view'%}">Shop</a></li>
+                  <li><a href="{% url 'about'%}">About Us</a></li>
+                  <li><a href="{% url 'cart_view'%}">Shopping cart</a></li>
+              </ul>
+          </div>
+
+          <!-- Promo Section (Centered) -->
+          <div class="col-md-4 text-center">
+              <h3 class="footer-heading mb-4">Promo</h3>
+              <a class="block-6">
+                  <img src="{% static 'audi_image/ZA.jpg'%}" alt="Image placeholder" class="img-fluid rounded mb-4">
+                  <h3 class="font-weight-light mb-0">Finding Your Perfect  Rythm </h3>
+                  <p>Promo from April 15 &mdash; 25, 2025</p>
+              </a>
+          </div>
+
+          <!-- Contact Info (Right) -->
+          <div class="col-md-4 text-md-end">
+              <h3 class="footer-heading mb-4">Contact Info</h3>
+              <ul class="list-unstyled">
+                  <li class="address"> 123, MG Road, <br>Near Metro Station,<br>
+                    Ernakulam, Kerala - 682001, India</li>
+                  <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
+                  <li class="email">emailaddress@domain.com</li>
+              </ul>
+          </div>
+      </div>
+
+     
+  </div>
+</footer>
